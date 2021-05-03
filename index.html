@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Get Quote On Every Single Load</title>
+
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css"
+    />
+    <style>
+      [v-cloak] {
+        display: none !important;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="app">
+      <div class="container my-5" v-cloak>
+        <div class="row">
+          <div class="col-12 my-5">
+            <figure class="text-center mt-5">
+              <blockquote class="blockquote">
+                <h3>{{ quote.content }}</h3>
+              </blockquote>
+              <figcaption class="blockquote-footer">
+                Author: <cite>{{ quote.author }}</cite>
+              </figcaption>
+            </figure>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script type="module">
+      import {
+        createApp,
+        ref,
+      } from "https://unpkg.com/vue@3.0.11/dist/vue.esm-browser.prod.js";
+      const app = createApp({
+        setup() {
+          const quote = ref("");
+          fetch("https://api.quotable.io/random")
+            .then((res) => res.json())
+            .then((data) => {
+              quote.value = data;
+            });
+
+          return { quote };
+        },
+      });
+      app.mount("#app");
+    </script>
+  </body>
+</html>
